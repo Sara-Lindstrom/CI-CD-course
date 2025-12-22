@@ -62,10 +62,10 @@ jobs:
         with:
           node-version: "24"
           cache: "npm"
-          cache-dependency-path: TodoApp.client/package-lock.json
+          cache-dependency-path: todoapp.client/package-lock.json
 
       - name: Install client dependencies
-        working-directory: TodoApp.client
+        working-directory: todoapp.client
         run: npm ci
 
       - name: Start backend
@@ -80,7 +80,7 @@ jobs:
           exit 1
 
       - name: API Integration Tests (Newman)
-        working-directory: TodoApp.client
+        working-directory: todoapp.client
         run: npm run test:api
 
   playwright-e2e:
