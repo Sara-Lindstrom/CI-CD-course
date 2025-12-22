@@ -19,6 +19,7 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore .NET solution
+        working-directory: CI-CD-course
         run: dotnet restore ToDoApp.sln
 
       - name: Run backend unit tests

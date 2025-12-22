@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{CDF81BD8-AF6A-4DA2-9D0E-24EAD79648B6}|todoapp.client\\todoapp.client.esproj|c:\\users\\saram\\desktop\\devsecops\\ci-cd-course\\todoapp.client\\playwright.config.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{CDF81BD8-AF6A-4DA2-9D0E-24EAD79648B6}|todoapp.client\\todoapp.client.esproj|solutionrelative:todoapp.client\\playwright.config.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|c:\\users\\saram\\desktop\\devsecops\\ci-cd-course\\todoapp.server.tests\\unittests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|solutionrelative:todoapp.server.tests\\unittests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|c:\\users\\saram\\desktop\\devsecops\\ci-cd-course\\todoapp.server.tests\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|solutionrelative:todoapp.server.tests\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|c:\\users\\saram\\desktop\\devsecops\\ci-cd-course\\todoapp.server.tests\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|solutionrelative:todoapp.server.tests\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{39E018DF-465E-4857-87EC-819FD7519825}|TodoApp.Server\\TodoApp.Server.csproj|c:\\users\\saram\\desktop\\devsecops\\ci-cd-course\\todoapp.server\\controllers\\todocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,14 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|c:\\users\\saram\\desktop\\devsecops\\ci-cd-course\\todoapp.server.tests\\todoapp.server.tests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|solutionrelative:todoapp.server.tests\\todoapp.server.tests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|c:\\users\\saram\\desktop\\devsecops\\ci-cd-course\\todoapp.server.tests\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|solutionrelative:todoapp.server.tests\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|c:\\users\\saram\\desktop\\devsecops\\ci-cd-course\\todoapp.server.tests\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{0D35C408-8525-4A47-9835-F04ED06A4842}|TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj|solutionrelative:todoapp.server.tests\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{39E018DF-465E-4857-87EC-819FD7519825}|TodoApp.Server\\TodoApp.Server.csproj|c:\\users\\saram\\desktop\\devsecops\\ci-cd-course\\todoapp.server\\data\\todos.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -83,43 +87,56 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "playwright.config.ts",
+              "DocumentMoniker": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\todoapp.client\\playwright.config.ts",
+              "RelativeDocumentMoniker": "todoapp.client\\playwright.config.ts",
+              "ToolTip": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\todoapp.client\\playwright.config.ts",
+              "RelativeToolTip": "todoapp.client\\playwright.config.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-12-22T15:10:14.245Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "UnitTests.cs",
               "DocumentMoniker": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server.Tests\\UnitTests.cs",
               "RelativeDocumentMoniker": "TodoApp.Server.Tests\\UnitTests.cs",
               "ToolTip": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server.Tests\\UnitTests.cs",
               "RelativeToolTip": "TodoApp.Server.Tests\\UnitTests.cs",
-              "ViewState": "AgIAAGoAAAAAAAAAAADwvwQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABUAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-17T15:59:23.126Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "TodoController.cs",
               "DocumentMoniker": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server\\Controllers\\TodoController.cs",
               "RelativeDocumentMoniker": "TodoApp.Server\\Controllers\\TodoController.cs",
               "ToolTip": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server\\Controllers\\TodoController.cs",
               "RelativeToolTip": "TodoApp.Server\\Controllers\\TodoController.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAYwEAAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAYwEAAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-17T18:47:40.539Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server.Tests\\appsettings.json",
               "RelativeDocumentMoniker": "TodoApp.Server.Tests\\appsettings.json",
               "ToolTip": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server.Tests\\appsettings.json",
               "RelativeToolTip": "TodoApp.Server.Tests\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-12-17T19:23:22.809Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "todos.json",
               "DocumentMoniker": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server\\Data\\todos.json",
               "RelativeDocumentMoniker": "TodoApp.Server\\Data\\todos.json",
@@ -131,7 +148,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "TodoApp.Server\\Properties\\launchSettings.json",
@@ -143,7 +160,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "TodoApp.Server.Tests.csproj",
               "DocumentMoniker": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj",
               "RelativeDocumentMoniker": "TodoApp.Server.Tests\\TodoApp.Server.Tests.csproj",
@@ -155,7 +172,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server.Tests\\appsettings.Development.json",
               "RelativeDocumentMoniker": "TodoApp.Server.Tests\\appsettings.Development.json",
@@ -167,7 +184,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "TodoApp.Server.http",
               "DocumentMoniker": "C:\\Users\\SaraM\\Desktop\\DevSecOps\\CI-CD-course\\TodoApp.Server\\TodoApp.Server.http",
               "RelativeDocumentMoniker": "TodoApp.Server\\TodoApp.Server.http",
