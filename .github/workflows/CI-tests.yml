@@ -103,10 +103,6 @@ jobs:
         working-directory: todoapp.client
         run: npx playwright install-deps chromium firefox webkit
 
-      - name: Build client
-        working-directory: todoapp.client
-        run: npm run build
-
       - name: Start backend (port 5159)
         run: |
           dotnet run --project TodoApp.Server/TodoApp.Server.csproj --urls http://127.0.0.1:5159 &
@@ -118,8 +114,23 @@ jobs:
           echo "Backend did not start in time" >&2
           exit 1
 
+      - name: Start frontend (port 7294)
+        working-directory: todoapp.client
+        run: |
+          # Use your normal dev/start command here if different
+          npm run dev -- --host 127.0.0.1 --port 7294 &
+          echo "Waiting for frontend on https://localhost:7294 ..."
+          for i in {1..90}; do
+            curl -kfsS https://127.0.0.1:7294/ >/dev/null 2>&1 && echo "Frontend is up!" && exit 0
+            sleep 1
+          done
+          echo "Frontend did not start in time" >&2
+          exit 1
+
       - name: E2E Tests (Playwright)
         working-directory: todoapp.client
+        env:
+          BASE_URL: https://localhost:7294
         run: npm run test:e2e
 
       - uses: actions/upload-artifact@v4
