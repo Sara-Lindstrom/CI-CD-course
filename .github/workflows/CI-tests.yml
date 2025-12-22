@@ -104,8 +104,6 @@ jobs:
         run: npx playwright install-deps chromium firefox webkit
 
       - name: Start backend (port 5159)
-        env:
-          EnableHttpsRedirection: "false"
         run: |
           dotnet run --project TodoApp.Server/TodoApp.Server.csproj --urls http://127.0.0.1:5159 &
           echo "Waiting for backend to accept connections on :5159..."
