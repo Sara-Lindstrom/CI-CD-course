@@ -107,12 +107,12 @@ jobs:
         working-directory: todoapp.client
         run: npm run build
 
-      - name: Start backend
+      - name: Start backend (port 5159)
         run: |
-          dotnet run --project TodoApp.Server/TodoApp.Server.csproj --urls http://127.0.0.1:5000 &
-          echo "Waiting for backend to accept connections on :5000..."
-          for i in {1..45}; do
-            nc -z 127.0.0.1 5000 && echo "Backend is up!" && exit 0
+          dotnet run --project TodoApp.Server/TodoApp.Server.csproj --urls http://127.0.0.1:5159 &
+          echo "Waiting for backend to accept connections on :5159..."
+          for i in {1..60}; do
+            curl -fsS http://127.0.0.1:5159/ >/dev/null 2>&1 && echo "Backend is up!" && exit 0
             sleep 1
           done
           echo "Backend did not start in time" >&2
