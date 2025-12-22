@@ -121,9 +121,9 @@ jobs:
         run: |
           # Use your normal dev/start command here if different
           npm run dev -- --host 127.0.0.1 --port 7294 &
-          echo "Waiting for frontend on https://localhost:7294 ..."
+          echo "Waiting for frontend on http://localhost:7294 ..."
           for i in {1..90}; do
-            curl -kfsS https://127.0.0.1:7294/ >/dev/null 2>&1 && echo "Frontend is up!" && exit 0
+            curl -kfsS http://127.0.0.1:7294/ >/dev/null 2>&1 && echo "Frontend is up!" && exit 0
             sleep 1
           done
           echo "Frontend did not start in time" >&2
