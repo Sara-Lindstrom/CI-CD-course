@@ -7,43 +7,43 @@ on:
     branches: [main, develop]
 
 jobs:
-  backend-unit-tests:
-    name: Backend unit tests (.NET)
-    runs-on: ubuntu-latest
-    env:
-      ROOT_DIR: ${{ github.workspace }}
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Debug, log root + find solution
-        shell: bash
-        run: |
-          echo "ROOT_DIR=$ROOT_DIR"
-          echo "pwd=$(pwd)"
-          echo "Top-level files:"
-          ls -la
-          echo "All .sln files (maxdepth 5):"
-          find "$ROOT_DIR" -maxdepth 5 -name "*.sln" -print
-          echo "Repo tree (depth 2):"
-          find "$ROOT_DIR" -maxdepth 2 -mindepth 1 -type d -print
-
   # backend-unit-tests:
   #   name: Backend unit tests (.NET)
   #   runs-on: ubuntu-latest
+  #   env:
+  #     ROOT_DIR: ${{ github.workspace }}
+
   #   steps:
   #     - uses: actions/checkout@v4
 
-  #     - name: Setup .NET
-  #       uses: actions/setup-dotnet@v4
-  #       with:
-  #         dotnet-version: "8.0.x"
+  #     - name: Debug, log root + find solution
+  #       shell: bash
+  #       run: |
+  #         echo "ROOT_DIR=$ROOT_DIR"
+  #         echo "pwd=$(pwd)"
+  #         echo "Top-level files:"
+  #         ls -la
+  #         echo "All .sln files (maxdepth 5):"
+  #         find "$ROOT_DIR" -maxdepth 5 -name "*.sln" -print
+  #         echo "Repo tree (depth 2):"
+  #         find "$ROOT_DIR" -maxdepth 2 -mindepth 1 -type d -print
 
-  #     - name: Restore .NET solution
-  #       run: dotnet restore ToDoApp.sln
+  backend-unit-tests:
+    name: Backend unit tests (.NET)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - name: Run backend unit tests
-  #       run: dotnet test TodoApp.Server.Tests/TodoApp.Server.Tests.csproj -c Release --no-restore
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore .NET solution
+        run: dotnet restore TodoApp.sln
+
+      - name: Run backend unit tests
+        run: dotnet test TodoApp.Server.Tests/TodoApp.Server.Tests.csproj -c Release --no-restore
 
   api-integration-tests:
     name: API integration tests (Postman/Newman)
