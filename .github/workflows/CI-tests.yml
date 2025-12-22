@@ -105,15 +105,15 @@ jobs:
 
       - name: Start backend (port 5159)
         env:
-          ASPNETCORE_ENVIRONMENT: Development
+          EnableHttpsRedirection: "false"
         run: |
-          dotnet run --project TodoApp.Server/TodoApp.Server.csproj --urls http://127.0.0.1:5159 > backend.log 2>&1 &
-          echo "Waiting for backend..."
+          dotnet run --project TodoApp.Server/TodoApp.Server.csproj --urls http://127.0.0.1:5159 &
+          echo "Waiting for backend to accept connections on :5159..."
           for i in {1..60}; do
-            curl -fsSL http://127.0.0.1:5159/health >/dev/null 2>&1 && echo "Backend is up!" && exit 0
+            curl -fsS http://127.0.0.1:5159/ >/dev/null 2>&1 && echo "Backend is up!" && exit 0
             sleep 1
           done
-          tail -200 backend.log || true
+          echo "Backend did not start in time" >&2
           exit 1
 
       - name: Start frontend (port 7294)
