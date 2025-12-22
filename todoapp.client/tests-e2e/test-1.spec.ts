@@ -87,16 +87,18 @@ test.describe("todo flow", () => {
     await page.waitForTimeout(2000);
 
     const allCardsBeforeDelete = await cards;
-    const asd = await allCardsBeforeDelete.count();
+    const cardsCountBeforeDelete = await allCardsBeforeDelete.count();
 
-    await expect.poll(() => asd).toBeGreaterThan(0);
+    await expect.poll(() => cardsCountBeforeDelete).toBeGreaterThan(0);
 
     const card = cards.first();
     const rowDelete = card.getByRole('button', { name: 'Delete' });
 
     await expect(rowDelete).toBeVisible();
     await rowDelete.click();
-    await expect(cards).toHaveCount(asd - 1);
+    
+    const cardsAferDelete = todoCardByTitle(page, todoTitle);
+    await expect(cardsAferDelete).toHaveCount(cardsCountBeforeDelete - 1);
   });
 })
 
