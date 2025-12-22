@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "be132a8f-386c-4aff-badd-c506b0688524",
+		"name": "API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50937177",
+		"_collection_link": "https://barafarasara-8957269.postman.co/workspace/skola~ef6dd8af-f57a-4710-bba8-24d2dd726305/collection/50937177-be132a8f-386c-4aff-badd-c506b0688524?action=share&source=collection_link&creator=50937177"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"201 Created\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"\r",
+							"    const item = pm.response.json();\r",
+							"    pm.expect(item).to.be.an(\"object\");\r",
+							"\r",
+							"    pm.expect(item).to.have.property(\"id\");\r",
+							"    pm.expect(item).to.have.property(\"title\");\r",
+							"    pm.expect(item).to.have.property(\"isDone\");\r",
+							"    pm.expect(item).to.have.property(\"isUrgent\");\r",
+							"    pm.expect(item).to.have.property(\"createdDate\");\r",
+							"\r",
+							"    pm.expect(item.id).to.be.a(\"number\");\r",
+							"    pm.expect(item.title).to.be.a(\"string\").and.to.not.be.empty;\r",
+							"    pm.expect(item.title.trim()).to.not.eql(\"\");\r",
+							"\r",
+							"    pm.collectionVariables.set(\"todoItem\", item);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Postman integration test todo\",\r\n  \"isUrgent\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5159/todo/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5159",
+					"path": [
+						"todo",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const todos = pm.response.json();",
+							"",
+							"pm.test('Status code is 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('todos have required fields', function () {",
+							"    for(let todo of todos){",
+							"        pm.expect(todo).to.have.property('id');",
+							"        pm.expect(todo).to.have.property('title');",
+							"        pm.expect(todo).to.have.property('isDone');",
+							"        pm.expect(todo).to.have.property('isUrgent');",
+							"        pm.expect(todo).to.have.property('createdDate');",
+							"    }",
+							"});",
+							"",
+							"pm.collectionVariables.set('todos', todos);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5159/todo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5159",
+					"path": [
+						"todo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get by id",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const item = pm.collectionVariables.get(\"todoItem\");\r",
+							"if (!item) throw new Error(\"todoItem is not set. Run POST /Todo/add first.\");\r",
+							"\r",
+							"const todo = typeof item === \"string\" ? JSON.parse(item) : item;\r",
+							"\r",
+							"if (todo.id === undefined || todo.id === null) {\r",
+							"  throw new Error(\"todoItem.id is missing.\");\r",
+							"}\r",
+							"\r",
+							"pm.variables.set(\"todoId\", todo.id);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 OK\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Returned item matches saved id\", () => {\r",
+							"    const item = pm.response.json();\r",
+							"    pm.expect(item).to.have.property(\"id\");\r",
+							"\r",
+							"    pm.expect(item).to.eql(pm.collectionVariables.get(\"todoItem\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5159/todo/{{todoId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5159",
+					"path": [
+						"todo",
+						"{{todoId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const item = pm.collectionVariables.get(\"todoItem\");\r",
+							"if (!item) throw new Error(\"todoItem is not set. Run POST /Todo/add first.\");\r",
+							"\r",
+							"const todo = typeof item === \"string\" ? JSON.parse(item) : item;\r",
+							"\r",
+							"if (todo.id === undefined || todo.id === null) {\r",
+							"  throw new Error(\"todoItem.id is missing.\");\r",
+							"}\r",
+							"\r",
+							"pm.variables.set(\"todoId\", todo.id);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 Updated and validated\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    const item = pm.response.json();\r",
+							"    pm.expect(item).to.be.an(\"object\");\r",
+							"\r",
+							"    pm.expect(item).to.have.property(\"id\");\r",
+							"    pm.expect(item).to.have.property(\"title\");\r",
+							"    pm.expect(item).to.have.property(\"isDone\");\r",
+							"    pm.expect(item).to.have.property(\"isUrgent\");\r",
+							"    pm.expect(item).to.have.property(\"createdDate\");\r",
+							"\r",
+							"    pm.expect(item.id).to.be.a(\"number\");\r",
+							"    \r",
+							"    pm.expect(item.title).to.be.a(\"string\").and.to.not.be.empty;\r",
+							"    pm.expect(item.title.trim()).to.not.eql(\"\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\": {{todoId}},\r\n    \"title\": \"Postman integration test updated\",\r\n    \"isUrgent\": true,\r\n    \"IsDone\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5159/todo/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5159",
+					"path": [
+						"todo",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const item = pm.collectionVariables.get(\"todoItem\");\r",
+							"if (!item) throw new Error(\"todoItem is not set. Run POST /Todo/add first.\");\r",
+							"\r",
+							"const todo = typeof item === \"string\" ? JSON.parse(item) : item;\r",
+							"\r",
+							"if (todo.id === undefined || todo.id === null) {\r",
+							"  throw new Error(\"todoItem.id is missing.\");\r",
+							"}\r",
+							"\r",
+							"pm.variables.set(\"todoId\", todo.id);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"204 NoContent\", () => {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{todoId}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5159/todo/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5159",
+					"path": [
+						"todo",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "products",
+			"value": ""
+		},
+		{
+			"key": "todos",
+			"value": ""
+		},
+		{
+			"key": "todoId",
+			"value": ""
+		},
+		{
+			"key": "todoItem",
+			"value": ""
+		}
+	]
+}
