@@ -118,6 +118,13 @@ jobs:
           echo "Backend did not start in time" >&2
           exit 1
 
+      - name: Debug, show Playwright config + tests
+        working-directory: todoapp.client
+        run: |
+          ls -la
+          ls -la tests || true
+          find . -maxdepth 4 -type f \( -name "playwright.config.*" -o -name "*.spec.*" -o -name "*.test.*" \) -print
+
       - name: E2E Tests (Playwright)
         working-directory: todoapp.client
         run: npm run test:e2e
