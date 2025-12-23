@@ -45,7 +45,6 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     }
 }
 
-// https://vitejs.dev/config/
 export default defineConfig(()=>{
     // const viteEnv = loadEnv(mode, process.cwd(), "VITE_");
     // let target = process.env.VITE_CI_API_TARGET || viteEnv.VITE_CI_API_TARGET || "";
@@ -60,8 +59,14 @@ export default defineConfig(()=>{
     
         if (httpsProfile?.applicationUrl) {
             const urls = httpsProfile.applicationUrl.split(';');
-            const httpUrl = urls.find((u: string) => u.startsWith("http://"));
-            if (!target && httpUrl) target = httpUrl;
+
+            if (process.env.GITHUB_ACTIONS || process.env.CI) {
+                const httpUrl = urls.find((u: string) => u.startsWith("http://"));
+                if (!target && httpUrl) target = httpUrl;
+            }else{
+               const httspUrl = urls.find((u: string) => u.startsWith("https://"));
+                if (!target && httspUrl) target = httspUrl;
+            }
         }
     } catch (err) {
         console.warn('⚠️ Could not load or parse launchSettings.json. Using default target.', err);
