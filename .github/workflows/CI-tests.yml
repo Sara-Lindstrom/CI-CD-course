@@ -131,7 +131,7 @@ jobs:
       - name: E2E Tests (Playwright)
         working-directory: todoapp.client
         env:
-          VITE_API_TARGET: http://127.0.0.1:5159
+          VITE_CI_API_TARGET: http://127.0.0.1:5159
         run: npm run test:e2e
 
       - uses: actions/upload-artifact@v4

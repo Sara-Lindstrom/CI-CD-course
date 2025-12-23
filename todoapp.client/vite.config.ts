@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import fs from 'fs';
 import path from 'path';
 import plugin from '@vitejs/plugin-react';
@@ -46,33 +46,34 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig(()=>{
-    let target = process.env.VITE_API_TARGET || "";
+export default defineConfig(({mode})=>{
+    const viteEnv = loadEnv(mode, process.cwd(), "VITE_");
+    let target = process.env.VITE_CI_API_TARGET || viteEnv.VITE_CI_API_TARGET || "";
 
     try {
-    const launchSettings: LaunchSettings = JSON.parse(fs.readFileSync(launchSettingsPath, 'utf-8'));
-    const profiles = launchSettings.profiles;
-  
-    const httpsProfile = Object.values(profiles).find(profile =>
-      profile.applicationUrl?.includes('https://')
-    );
-  
-    if (httpsProfile?.applicationUrl) {
-        const urls = httpsProfile.applicationUrl.split(';');
+        const launchSettings: LaunchSettings = JSON.parse(fs.readFileSync(launchSettingsPath, 'utf-8'));
+        const profiles = launchSettings.profiles;
+    
+        const httpsProfile = Object.values(profiles).find(profile =>
+        profile.applicationUrl?.includes('https://')
+        );
+    
+        if (httpsProfile?.applicationUrl) {
+            const urls = httpsProfile.applicationUrl.split(';');
 
-        if(target == ""){
-            const httpsUrl = urls.find(url => url.startsWith('https://'));
-            if (httpsUrl) {
-                target = httpsUrl;
+            if(target == ""){
+                const httpsUrl = urls.find(url => url.startsWith('https://'));
+                if (httpsUrl) {
+                    target = httpsUrl;
+                }
+            }
+            else{
+                const httpUrl = urls.find((u: string) => u.startsWith("http://"));
+                if (httpUrl) {
+                    target = httpUrl;
+                }
             }
         }
-        else{
-            const httpUrl = urls.find((u: string) => u.startsWith("http://"));
-            if (httpUrl) {
-                target = httpUrl;
-            }
-        }
-    }
     } catch (err) {
         console.warn('⚠️ Could not load or parse launchSettings.json. Using default target.', err);
     }
