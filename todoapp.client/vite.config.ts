@@ -46,30 +46,27 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
 }
 
 export default defineConfig(()=>{
-    // const viteEnv = loadEnv(mode, process.cwd(), "VITE_");
-    // let target = process.env.VITE_CI_API_TARGET || viteEnv.VITE_CI_API_TARGET || "";
     let target = "";
 
     try {
-        const launchSettings: LaunchSettings = JSON.parse(fs.readFileSync(launchSettingsPath, 'utf-8'));
-        const profiles = launchSettings.profiles;
-        const httpsProfile = Object.values(profiles).find(profile =>
-            profile.applicationUrl?.includes('https://')
-        );
-    
-        if (httpsProfile?.applicationUrl) {
-            const urls = httpsProfile.applicationUrl.split(';');
+        const launchSettings: LaunchSettings = JSON.parse(fs.readFileSync(launchSettingsPath, "utf-8"));
+        const profiles = launchSettings.profiles ?? {};
+        const allUrls = Object.values(profiles).flatMap(p => (p.applicationUrl ?? "").split(";")).map(u => u.trim()).filter(Boolean);
 
-            if (process.env.GITHUB_ACTIONS || process.env.CI) {
-                const httpUrl = urls.find((u: string) => u.startsWith("http://"));
-                if (!target && httpUrl) target = httpUrl;
-            }else{
-               const httspUrl = urls.find((u: string) => u.startsWith("https://"));
-                if (!target && httspUrl) target = httspUrl;
-            }
+        const inCI = process.env.GITHUB_ACTIONS === "true" || process.env.CI === "true";
+        const preferredScheme = inCI ? "http://" : "https://";
+        const fallbackScheme = inCI ? "https://" : "http://";
+
+        const preferred = allUrls.find(u => u.startsWith(preferredScheme));
+        const fallback = allUrls.find(u => u.startsWith(fallbackScheme));
+
+        const picked = preferred || fallback;
+        if (!target && picked){
+            target = picked;
         }
-    } catch (err) {
-        console.warn('⚠️ Could not load or parse launchSettings.json. Using default target.', err);
+    } 
+    catch (err) {
+        console.warn("⚠️ Could not load or parse launchSettings.json. Using default target.", err);
     }
 
     return{
