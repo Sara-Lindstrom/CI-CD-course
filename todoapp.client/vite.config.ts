@@ -56,8 +56,19 @@ try {
   
     if (httpsProfile?.applicationUrl) {
         const urls = httpsProfile.applicationUrl.split(';');
-        const httpUrl = urls.find((u: string) => u.startsWith("http://"));
-        if (!target && httpUrl) target = httpUrl;
+
+        if(target == ""){
+            const httpsUrl = urls.find(url => url.startsWith('https://'));
+            if (httpsUrl) {
+                target = httpsUrl;
+            }
+        }
+        else{
+            const httpUrl = urls.find((u: string) => u.startsWith("http://"));
+            if (!target && httpUrl) {
+                target = httpUrl;
+            }
+        }
     }
 } catch (err) {
     console.warn('⚠️ Could not load or parse launchSettings.json. Using default target.', err);
