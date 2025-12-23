@@ -45,8 +45,11 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     }
 }
 
-let target = process.env.VITE_API_TARGET || "";
-try {
+// https://vitejs.dev/config/
+export default defineConfig(()=>{
+    let target = process.env.VITE_API_TARGET || "";
+
+    try {
     const launchSettings: LaunchSettings = JSON.parse(fs.readFileSync(launchSettingsPath, 'utf-8'));
     const profiles = launchSettings.profiles;
   
@@ -70,30 +73,31 @@ try {
             }
         }
     }
-} catch (err) {
-    console.warn('⚠️ Could not load or parse launchSettings.json. Using default target.', err);
-}
+    } catch (err) {
+        console.warn('⚠️ Could not load or parse launchSettings.json. Using default target.', err);
+    }
 
-// https://vitejs.dev/config/
-export default defineConfig({
-    plugins: [plugin()],
-    resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url))
-        }
-    },
-    server: {
-        proxy: {
-            '^/todo': {
-                target,
-                secure: false
+    return{
+        plugins: [plugin()],
+        resolve: {
+            alias: {
+                '@': fileURLToPath(new URL('./src', import.meta.url))
             }
         },
-        port: 7293,
-        https: {
-            key: fs.readFileSync(keyFilePath),
-            cert: fs.readFileSync(certFilePath),
+        server: {
+            proxy: {
+                '^/todo': {
+                    target,
+                    secure: false
+                }
+            },
+            port: 7293,
+            https: {
+                key: fs.readFileSync(keyFilePath),
+                cert: fs.readFileSync(certFilePath),
+            }
         }
     }
+
 })
 
