@@ -54,21 +54,14 @@ export default defineConfig(()=>{
     try {
         const launchSettings: LaunchSettings = JSON.parse(fs.readFileSync(launchSettingsPath, 'utf-8'));
         const profiles = launchSettings.profiles;
-    
         const httpsProfile = Object.values(profiles).find(profile =>
-        profile.applicationUrl?.includes('https://')
+            profile.applicationUrl?.includes('https://')
         );
     
         if (httpsProfile?.applicationUrl) {
             const urls = httpsProfile.applicationUrl.split(';');
-
-            const httpOrHttpsUrl = urls.find(
-                (u: string) => u.startsWith("http://") || u.startsWith("https://")
-            );
-            
-            if (httpOrHttpsUrl) {
-                target = httpOrHttpsUrl;
-            }
+            const httpUrl = urls.find((u: string) => u.startsWith("http://"));
+            if (!target && httpUrl) target = httpUrl;
         }
     } catch (err) {
         console.warn('⚠️ Could not load or parse launchSettings.json. Using default target.', err);
