@@ -131,6 +131,7 @@ jobs:
       - name: E2E Tests (Playwright)
         working-directory: todoapp.client
         env:
+          VITE_API_TARGET: http://127.0.0.1:5159
           BASE_URL: http://127.0.0.1:7294
         run: npm run test:e2e
 

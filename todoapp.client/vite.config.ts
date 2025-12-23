@@ -45,7 +45,7 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     }
 }
 
-let target = "";
+let target = env.VITE_API_TARGET || "";
 try {
     const launchSettings: LaunchSettings = JSON.parse(fs.readFileSync(launchSettingsPath, 'utf-8'));
     const profiles = launchSettings.profiles;
@@ -55,11 +55,9 @@ try {
     );
   
     if (httpsProfile?.applicationUrl) {
-      const urls = httpsProfile.applicationUrl.split(';');
-      const httpsUrl = urls.find(url => url.startsWith('https://'));
-      if (httpsUrl) {
-        target = httpsUrl;
-      }
+        const urls = httpsProfile.applicationUrl.split(';');
+        const httpUrl = urls.find((u: string) => u.startsWith("http://"));
+        if (!target && httpUrl) target = httpUrl;
     }
 } catch (err) {
     console.warn('⚠️ Could not load or parse launchSettings.json. Using default target.', err);

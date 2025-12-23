@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 
-const BASE_URL = 'https://localhost:7294';
+const BASE_URL = process.env.BASE_URL ?? 'https://localhost:7294';
 const todoTitle = `pw-todo-${new Date().toISOString().slice(0, 10)}`;
 
 async function gotoApp(page: Page) {
