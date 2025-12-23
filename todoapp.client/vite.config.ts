@@ -45,7 +45,7 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     }
 }
 
-let target = env.VITE_API_TARGET || "";
+let target = process.env.VITE_API_TARGET || "";
 try {
     const launchSettings: LaunchSettings = JSON.parse(fs.readFileSync(launchSettingsPath, 'utf-8'));
     const profiles = launchSettings.profiles;
@@ -65,7 +65,7 @@ try {
         }
         else{
             const httpUrl = urls.find((u: string) => u.startsWith("http://"));
-            if (!target && httpUrl) {
+            if (httpUrl) {
                 target = httpUrl;
             }
         }
