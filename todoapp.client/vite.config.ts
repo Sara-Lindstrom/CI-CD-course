@@ -45,46 +45,51 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     }
 }
 
-let target = "";
-try {
-    const launchSettings: LaunchSettings = JSON.parse(fs.readFileSync(launchSettingsPath, 'utf-8'));
-    const profiles = launchSettings.profiles;
-  
-    const httpsProfile = Object.values(profiles).find(profile =>
-      profile.applicationUrl?.includes('https://')
-    );
-  
-    if (httpsProfile?.applicationUrl) {
-      const urls = httpsProfile.applicationUrl.split(';');
-      const httpsUrl = urls.find(url => url.startsWith('https://'));
-      if (httpsUrl) {
-        target = httpsUrl;
-      }
-    }
-} catch (err) {
-    console.warn('⚠️ Could not load or parse launchSettings.json. Using default target.', err);
-}
+export default defineConfig(()=>{
+    let target = "";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-    plugins: [plugin()],
-    resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url))
+    try {
+        const launchSettings: LaunchSettings = JSON.parse(fs.readFileSync(launchSettingsPath, "utf-8"));
+        const profiles = launchSettings.profiles ?? {};
+        const allUrls = Object.values(profiles).flatMap(p => (p.applicationUrl ?? "").split(";")).map(u => u.trim()).filter(Boolean);
+
+        const inCI = process.env.GITHUB_ACTIONS === "true" || process.env.CI === "true";
+        const preferredScheme = inCI ? "http://" : "https://";
+        const fallbackScheme = inCI ? "https://" : "http://";
+
+        const preferred = allUrls.find(u => u.startsWith(preferredScheme));
+        const fallback = allUrls.find(u => u.startsWith(fallbackScheme));
+
+        const picked = preferred || fallback;
+        if (!target && picked){
+            target = picked;
         }
-    },
-    server: {
-        proxy: {
-            '^/todo': {
-                target,
-                secure: false
+    } 
+    catch (err) {
+        console.warn("⚠️ Could not load or parse launchSettings.json. Using default target.", err);
+    }
+
+    return{
+        plugins: [plugin()],
+        resolve: {
+            alias: {
+                '@': fileURLToPath(new URL('./src', import.meta.url))
             }
         },
-        port: 7293,
-        https: {
-            key: fs.readFileSync(keyFilePath),
-            cert: fs.readFileSync(certFilePath),
+        server: {
+            proxy: {
+                '^/todo': {
+                    target,
+                    secure: false
+                }
+            },
+            port: 7293,
+            https: {
+                key: fs.readFileSync(keyFilePath),
+                cert: fs.readFileSync(certFilePath),
+            }
         }
     }
+
 })
 

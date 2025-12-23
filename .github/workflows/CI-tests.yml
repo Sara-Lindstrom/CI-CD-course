@@ -19,7 +19,7 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore .NET solution
-        run: dotnet restore ToDoApp.sln
+        run: dotnet restore TodoApp.sln
 
       - name: Run backend unit tests
         run: dotnet test TodoApp.Server.Tests/TodoApp.Server.Tests.csproj -c Release --no-restore
@@ -41,25 +41,26 @@ jobs:
         with:
           node-version: "24"
           cache: "npm"
-          cache-dependency-path: TodoApp.client/package-lock.json
+          cache-dependency-path: todoapp.client/package-lock.json
 
       - name: Install client dependencies
-        working-directory: TodoApp.client
+        working-directory: todoapp.client
         run: npm ci
 
-      - name: Start backend
+      - name: Start backend (port 5159)
         run: |
-          dotnet run --project TodoApp.Server/TodoApp.Server.csproj --urls http://127.0.0.1:5000 &
-          echo "Waiting for backend to accept connections on :5000..."
-          for i in {1..45}; do
-            nc -z 127.0.0.1 5000 && echo "Backend is up!" && exit 0
+          dotnet run --project TodoApp.Server/TodoApp.Server.csproj --urls http://127.0.0.1:5159 &
+          echo "Waiting for backend to accept connections on :5159..."
+          for i in {1..60}; do
+            curl -fsS http://127.0.0.1:5159/health >/dev/null 2>&1 && echo "Backend is up!" && exit 0
+            curl -fsS http://127.0.0.1:5159/ >/dev/null 2>&1 && echo "Backend is up (root)!" && exit 0
             sleep 1
           done
           echo "Backend did not start in time" >&2
           exit 1
 
       - name: API Integration Tests (Newman)
-        working-directory: TodoApp.client
+        working-directory: todoapp.client
         run: npm run test:api
 
   playwright-e2e:
@@ -79,10 +80,10 @@ jobs:
         with:
           node-version: "24"
           cache: "npm"
-          cache-dependency-path: TodoApp.client/package-lock.json
+          cache-dependency-path: todoapp.client/package-lock.json
 
       - name: Install client dependencies
-        working-directory: TodoApp.client
+        working-directory: todoapp.client
         run: npm ci
 
       - name: Cache Playwright browsers
@@ -90,41 +91,51 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('TodoApp.client/package-lock.json') }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('todoapp.client/package-lock.json') }}
 
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        working-directory: TodoApp.client
+        working-directory: todoapp.client
         run: npx playwright install --with-deps chromium firefox webkit
 
       - name: Install Playwright deps (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        working-directory: TodoApp.client
+        working-directory: todoapp.client
         run: npx playwright install-deps chromium firefox webkit
 
-      - name: Build client
-        working-directory: TodoApp.client
-        run: npm run build
-
-      - name: Start backend
+      - name: Start backend (port 5159)
         run: |
-          dotnet run --project TodoApp.Server/TodoApp.Server.csproj --urls http://127.0.0.1:5000 &
-          echo "Waiting for backend to accept connections on :5000..."
-          for i in {1..45}; do
-            nc -z 127.0.0.1 5000 && echo "Backend is up!" && exit 0
+          dotnet run --project TodoApp.Server/TodoApp.Server.csproj --urls http://127.0.0.1:5159 &
+          echo "Waiting for backend to accept connections on :5159..."
+          for i in {1..60}; do
+            curl -fsS http://127.0.0.1:5159/health >/dev/null 2>&1 && echo "Backend is up!" && exit 0
+            curl -fsS http://127.0.0.1:5159/ >/dev/null 2>&1 && echo "Backend is up (root)!" && exit 0
             sleep 1
           done
           echo "Backend did not start in time" >&2
           exit 1
 
+      - name: Start frontend (port 7294)
+        working-directory: todoapp.client
+        run: |
+          # Use your normal dev/start command here if different
+          npm run dev -- --host 127.0.0.1 --port 7294 &
+          echo "Waiting for frontend on https://localhost:7294 ..."
+          for i in {1..90}; do
+            curl -kfsS https://127.0.0.1:7294/ >/dev/null 2>&1 && echo "Frontend is up!" && exit 0
+            sleep 1
+          done
+          echo "Frontend did not start in time" >&2
+          exit 1
+
       - name: E2E Tests (Playwright)
-        working-directory: TodoApp.client
+        working-directory: todoapp.client
         run: npm run test:e2e
 
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-report
-          path: TodoApp.client/playwright-report/
+          path: todoapp.client/playwright-report/
           retention-days: 7
 
