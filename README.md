@@ -52,7 +52,7 @@ Tests need to run in order and depend on each other to run the full cycle withou
 
 ### Integration tests (API tests)
 - **in console in root folder:** 
-    `$env:ASPNETCORE_URLS="http://localhost:5159"; dotnet run --project TodoApp.Server/TodoApp.Server.csproj`
+    `set "ASPNETCORE_URLS=http://localhost:5159" && dotnet run --project TodoApp.Server\TodoApp.Server.csproj`
 - **in console in todoapp.client:** 
     `npm run test:api`
 
